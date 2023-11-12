@@ -1,4 +1,9 @@
 import { Component } from 'react';
+import { ContactForm } from './ContactForm/ContactForm';
+// import { ContactList } from './ContactList/ContactList';
+// import { ContactFilter } from './ContactFilter/ContactFilter';
+
+import css from './App.module.css';
 
 export class App extends Component {
   constructor() {
@@ -12,5 +17,35 @@ export class App extends Component {
       ],
       filter: '',
     };
+  }
+  addContact = event => {
+    const loweredCase = event.name.toLowerCase().trim();
+
+    const exists = this.state.contacts.some(
+      contact => contact.name.toLowerCase().trim() === loweredCase
+    );
+
+    if (exists) {
+      alert(`${event.name} is already in contacts!`);
+    } else {
+      this.setState(({ contacts }) => ({
+        contacts: [...contacts, event],
+      }));
+    }
+  };
+  render() {
+    // const { filter } = this.state;
+
+    return (
+      <section className={css.content}>
+        <div className={css.content__container}>
+          <ContactForm addContact={this.addContact} />
+
+          <h2>Contacts</h2>
+          {/* <Filter ... />
+  <ContactList ... /> */}
+        </div>
+      </section>
+    );
   }
 }
