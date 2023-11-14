@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
-// import { ContactList } from './ContactList/ContactList';
-// import { ContactFilter } from './ContactFilter/ContactFilter';
+import { ContactList } from './ContactList/ContactList';
+import { ContactFilter } from './ContactFilter/ContactFilter';
 
 import css from './App.module.css';
 
@@ -18,32 +18,51 @@ export class App extends Component {
       filter: '',
     };
   }
-  addContact = event => {
-    const loweredCase = event.name.toLowerCase().trim();
-
-    const exists = this.state.contacts.some(
-      contact => contact.name.toLowerCase().trim() === loweredCase
+  addContact = newContact => {
+    const exists = this.state.contacts.find(
+      contact => contact.name === newContact.name
     );
 
     if (exists) {
-      alert(`${event.name} is already in contacts!`);
+      alert(`${newContact.name} is already in contacts!`);
     } else {
       this.setState(({ contacts }) => ({
-        contacts: [...contacts, event],
+        contacts: [newContact, ...contacts],
       }));
     }
   };
+
+  addFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
+  filterContacts = () => {
+    const { filter, contacts } = this.state;
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
+
   render() {
-    // const { filter } = this.state;
+    const { filter } = this.state;
 
     return (
       <section className={css.content}>
         <div className={css.content__container}>
           <ContactForm addContact={this.addContact} />
-
           <h2>Contacts</h2>
-          {/* <Filter ... />
-  <ContactList ... /> */}
+          <ContactFilter filter={filter} addFilter={this.addFilter} />
+          <ContactList
+            contacts={this.filterContacts()}
+            deleteContact={this.deleteContact}
+          />
         </div>
       </section>
     );

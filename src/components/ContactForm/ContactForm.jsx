@@ -10,9 +10,9 @@ export class ContactForm extends Component {
     // const form = event.currentTarget;
     const name = event.target.name.value;
     const number = event.target.number.value;
-    // const { addContact } = this.props;
-    this.props.onSubmit({ id: nanoid(), name, number });
-    // addContact({ id: nanoid(), name, number });
+    const { addContact } = this.props;
+    // this.props.onSubmit({ id: nanoid(), name, number });
+    addContact({ id: nanoid(), name, number });
     event.target.reset();
   };
   render() {
@@ -51,5 +51,5 @@ export class ContactForm extends Component {
 ContactForm.propTypes = {
   number: PropTypes.string,
   name: PropTypes.string,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
 };
