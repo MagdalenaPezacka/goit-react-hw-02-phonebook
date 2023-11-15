@@ -56,7 +56,7 @@ export class App extends Component {
     return (
       <section className={css.content}>
         <div className={css.content__container}>
-          <ContactForm addContact={this.addContact} />
+          <ContactForm onSubmit={this.addContact} />
           <h2>Contacts</h2>
           <ContactFilter filter={filter} addFilter={this.addFilter} />
           <ContactList
